@@ -1,0 +1,773 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="baidu-site-verification" content="U9ARoyRdtV" />
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Yaf," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="如果你问我，你是怎么知道编写Twig.php的，在Php的官网有有Yaf设置模板引擎的教程，而Twig的配置在Twig的官网用也有说明。在Yaf中如果想使用其他的模板引擎，需要实现Yaf\View_Interface这个接口
+Twig安装1composer require twig/twig
+Bootstrap中加载composer的autoload.php完整的贴出来，_initLoader 是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Yaf集成Twig模板引擎">
+<meta property="og:url" content="https://cheerzz.github.io/2017/02/04/Yaf集成Twig模板引擎/index.html">
+<meta property="og:site_name" content="Littlest things">
+<meta property="og:description" content="如果你问我，你是怎么知道编写Twig.php的，在Php的官网有有Yaf设置模板引擎的教程，而Twig的配置在Twig的官网用也有说明。在Yaf中如果想使用其他的模板引擎，需要实现Yaf\View_Interface这个接口
+Twig安装1composer require twig/twig
+Bootstrap中加载composer的autoload.php完整的贴出来，_initLoader 是">
+<meta property="og:updated_time" content="2017-02-04T15:01:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Yaf集成Twig模板引擎">
+<meta name="twitter:description" content="如果你问我，你是怎么知道编写Twig.php的，在Php的官网有有Yaf设置模板引擎的教程，而Twig的配置在Twig的官网用也有说明。在Yaf中如果想使用其他的模板引擎，需要实现Yaf\View_Interface这个接口
+Twig安装1composer require twig/twig
+Bootstrap中加载composer的autoload.php完整的贴出来，_initLoader 是">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://cheerzz.github.io/2017/02/04/Yaf集成Twig模板引擎/"/>
+
+
+
+
+
+  <title> Yaf集成Twig模板引擎 | Littlest things </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', '90604745-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Littlest things</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <h1 class="site-subtitle" itemprop="description"></h1>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://cheerzz.github.io/2017/02/04/Yaf集成Twig模板引擎/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Placeless">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Littlest things">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Littlest things" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                Yaf集成Twig模板引擎
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-04T22:40:43+08:00">
+                2017-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/02/04/Yaf集成Twig模板引擎/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/04/Yaf集成Twig模板引擎/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>如果你问我，你是怎么知道编写Twig.php的，在Php的官网有有Yaf设置模板引擎的教程，而Twig的配置在Twig的官网用也有说明。<br>在Yaf中如果想使用其他的模板引擎，需要实现Yaf\View_Interface这个接口</p>
+<h1 id="Twig安装"><a href="#Twig安装" class="headerlink" title="Twig安装"></a>Twig安装</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer require twig/twig</div></pre></td></tr></table></figure>
+<h1 id="Bootstrap中加载composer的autoload-php"><a href="#Bootstrap中加载composer的autoload-php" class="headerlink" title="Bootstrap中加载composer的autoload.php"></a>Bootstrap中加载composer的autoload.php</h1><p>完整的贴出来，_initLoader 是需要的<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * <span class="doctag">@name</span> Bootstrap</div><div class="line"> * <span class="doctag">@author</span> placeless</div><div class="line"> * <span class="doctag">@desc</span> 所有在Bootstrap类中, 以_init开头的方法, 都会被Yaf调用,</div><div class="line"> * <span class="doctag">@see</span> http://www.php.net/manual/en/class.yaf-bootstrap-abstract.php</div><div class="line"> * 这些方法, 都接受一个参数:Yaf_Dispatcher $dispatcher</div><div class="line"> * 调用的次序, 和申明的次序相同</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bootstrap</span> <span class="keyword">extends</span> <span class="title">Yaf</span>\<span class="title">Bootstrap_Abstract</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">_initConfig</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="comment">//把配置保存起来</span></div><div class="line">        $arrConfig = Yaf\Application::app()-&gt;getConfig();</div><div class="line">        Yaf\Registry::set(<span class="string">'config'</span>, $arrConfig);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">_initLoader</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="comment">/**</span></div><div class="line">         *  Yaf\Loader::import是根据路径引入</div><div class="line">         *  Yaf\Loader::getInstance()-&gt;autoload 在library目录下的的路径</div><div class="line">         *  没有namespace的DB默认引入</div><div class="line">         *  namespace为lib\a\ 的路径一定要写对如class Haha</div><div class="line">         */</div><div class="line">        Yaf\Loader::import(APPLICATION_PATH . <span class="string">"/vendor/autoload.php"</span>);</div><div class="line">        Yaf\Loader::getInstance()-&gt;autoload(<span class="string">'helper'</span>);</div><div class="line">        Yaf\Loader::getInstance()-&gt;registerLocalNamespace([<span class="string">'T'</span>]);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">_initWhoops</span><span class="params">(Yaf\Dispatcher $dispatcher)</span></span>&#123;</div><div class="line">        <span class="keyword">if</span> (Yaf\Registry::get(<span class="string">'config'</span>)-&gt;whoops-&gt;handler) &#123;</div><div class="line">            $run     = <span class="keyword">new</span> Whoops\Run;</div><div class="line">            $handler = <span class="keyword">new</span> \Whoops\Handler\PrettyPageHandler();</div><div class="line">            $run-&gt;pushHandler($handler);</div><div class="line">            <span class="keyword">if</span> (Whoops\Util\Misc::isAjaxRequest()) &#123;</div><div class="line">                $run-&gt;pushHandler(<span class="keyword">new</span> \Whoops\Handler\JsonResponseHandler());</div><div class="line">            &#125;</div><div class="line">            $run-&gt;register();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> \Yaf\Dispatcher $dispatcher</div><div class="line">     *  注册一个插件</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">_initPlugin</span><span class="params">(Yaf\Dispatcher $dispatcher)</span></span></div><div class="line">    &#123;</div><div class="line">        $objSamplePlugin = <span class="keyword">new</span> SamplePlugin();</div><div class="line">        $dispatcher-&gt;registerPlugin($objSamplePlugin);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">_initDatabaseEloquent</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        $dbconfig = Yaf\Registry::get(<span class="string">"config"</span>)-&gt;mysql-&gt;toArray();</div><div class="line">        $capsule = <span class="keyword">new</span> Illuminate\Database\Capsule\Manager();</div><div class="line">        $capsule-&gt;addConnection($dbconfig);</div><div class="line">        $capsule-&gt;bootEloquent();</div><div class="line">        $capsule-&gt;setAsGlobal();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> \Yaf\Dispatcher $dispatcher</div><div class="line">     * 在这里注册自己的路由协议,默认使用简单路由</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">_initRoute</span><span class="params">(Yaf\Dispatcher $dispatcher)</span></span></div><div class="line">    &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> \Yaf\Dispatcher $dispatcher</div><div class="line">     * 在这里注册自己的view控制器，例如smarty,firekylin</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">_initView</span><span class="params">(Yaf\Dispatcher $dispatcher)</span></span></div><div class="line">    &#123;</div><div class="line">        </div><div class="line">        $twig = <span class="keyword">new</span> Twig(APPLICATION_PATH . <span class="string">'/application/views'</span>, Yaf\Registry::get(<span class="string">'config'</span>)-&gt;twig-&gt;toArray());</div><div class="line">        $dispatcher-&gt;setView($twig);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="Yaf配置文件中的Twig配置"><a href="#Yaf配置文件中的Twig配置" class="headerlink" title="Yaf配置文件中的Twig配置"></a>Yaf配置文件中的Twig配置</h1><p>完整的贴出来，找到Twig相关的就可以了<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">[common]</div><div class="line">application.directory = APPLICATION_PATH  "/application"</div><div class="line">;是否使用默认的异常捕获Controller, 如果开启, 在有未捕获的异常的时候, 控制权会交给ErrorController的errorAction方法，默认为false</div><div class="line">;application.dispatcher.catchException = true</div><div class="line">;在出错的时候, 是否抛出异常</div><div class="line">application.dispatcher.throwException=true</div><div class="line">;apache 目录下的目录名 比如工程文件在apache目录下的yaf中 如果直接是就是 /</div><div class="line"></div><div class="line">;baseUri 一定需要设置</div><div class="line">;WebServer下的yaf工程目录，比如我的/www/yaf，如果你的www目录就是只想yaf工程目录那么就是 /</div><div class="line">application.baseUri = '/yaf';</div><div class="line">application.dispatcher.defaultModule=index</div><div class="line">application.dispatcher.defaultController=index</div><div class="line">application.dispatcher.defaultAction=index</div><div class="line">application.view.ext='twig'</div><div class="line">application.modules='Index,Api,A'</div><div class="line"></div><div class="line"></div><div class="line">application.dir = 'yaf'</div><div class="line">[whoops]</div><div class="line">;是否是用whoops来显示错误信息</div><div class="line">whoops.handler = true</div><div class="line">[mysql]</div><div class="line">mysql.driver = 'mysql'</div><div class="line">mysql.host = 'localhost'</div><div class="line">mysql.database = 'chat'</div><div class="line">mysql.username = 'root'</div><div class="line">mysql.password = ''</div><div class="line">mysql.charset = 'utf8'</div><div class="line">mysql.collation = 'utf8_unicode_ci'</div><div class="line">mysql.prefix = ''</div><div class="line">[twig]</div><div class="line">twig.cache = APPLICATION_PATH "/storage/twig"</div><div class="line">[product : common : mysql : twig : whoops]</div><div class="line">twig.debug = 0</div><div class="line">[develop : common : mysql : twig : whoops]</div><div class="line">twig.debug = 1</div></pre></td></tr></table></figure></p>
+<h1 id="实现-Yaf-View-Interface的类"><a href="#实现-Yaf-View-Interface的类" class="headerlink" title="实现 Yaf\View_Interface的类"></a>实现 Yaf\View_Interface的类</h1><p>在Yaf中如果想使用其他的模板引擎，需要实现Yaf\View_Interface这个接口，我们命名为Twig.php,放在library目录下，不设置命名空间，那样就可以自动导入了<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Twig</span> <span class="keyword">implements</span> <span class="title">Yaf</span>\<span class="title">View_Interface</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">private</span> $loader;</div><div class="line">    <span class="keyword">private</span> $twig;</div><div class="line">    <span class="keyword">private</span> $variables = [];</div><div class="line">    <span class="keyword">private</span> $templateDir ;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> string $templateDir</div><div class="line">     * <span class="doctag">@param</span> array  $options</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($templateDir, array $options = array<span class="params">()</span>)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;setScriptPath($templateDir);</div><div class="line">        <span class="keyword">$this</span>-&gt;loader = <span class="keyword">new</span> Twig_Loader_Filesystem($templateDir);</div><div class="line">        <span class="keyword">$this</span>-&gt;twig   = <span class="keyword">new</span> Twig_Environment(<span class="keyword">$this</span>-&gt;loader, $options);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__isset</span><span class="params">($name)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;variables[$name]);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__set</span><span class="params">($name, $value)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;variables[$name] = $value;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span><span class="params">($name)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;variables[$name];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__unset</span><span class="params">($name)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">unset</span>(<span class="keyword">$this</span>-&gt;variables[$name]);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getTwig</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">assign</span><span class="params">($name, $value = null)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;variables[$name]=$value;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">setScriptPath</span><span class="params">($templateDir)</span></span></div><div class="line">    &#123;</div><div class="line"><span class="comment">//        $this-&gt;loader-&gt;setPaths($templateDir);</span></div><div class="line">        <span class="keyword">$this</span>-&gt;templateDir = $templateDir;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getScriptPath</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line"><span class="comment">//        $paths = $this-&gt;loader-&gt;getPaths();</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;templateDir;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">render</span><span class="params">($template,  $tpl_vars = null)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (!<span class="keyword">isset</span>(pathinfo($template)[<span class="string">'extension'</span>])) &#123;</div><div class="line">            $template .= <span class="string">'.'</span>.Yaf\Registry::get(<span class="string">'config'</span>)-&gt;application-&gt;view-&gt;ext;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (is_array($tpl_vars)) &#123;</div><div class="line">            <span class="keyword">foreach</span> ($tpl_vars <span class="keyword">as</span> $key =&gt; $val) &#123;</div><div class="line">                <span class="keyword">$this</span>-&gt;variables[$key]=$val;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;twig-&gt;load($template)-&gt;display(<span class="keyword">$this</span>-&gt;variables);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">display</span><span class="params">($template,  $tpl_vars = null)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;render($template, $tpl_vars);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">clear</span><span class="params">($name=null)</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">empty</span>($name)) &#123;</div><div class="line">            <span class="keyword">unset</span>(<span class="keyword">$this</span>-&gt;variables);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">unset</span>(<span class="keyword">$this</span>-&gt;variables[$name]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="Bootstrap中设置Twig"><a href="#Bootstrap中设置Twig" class="headerlink" title="Bootstrap中设置Twig"></a>Bootstrap中设置Twig</h1><p>可以在上面的代码中找到_initView,切记需要把_initView放在_initLoader的后面，在yaf中bootstrap中函数的初始化顺序是按照编写的顺序。<br>如果我们将_initView放在_initLoader的上面，那样就无法找到composer下载下来的Twig的类。在后面给Yaf设置Laravel的ORM时，我们也会遇到相同的情况。<br>因为我们需要在Route结束后操作数据库，如果数据库的配置放置在Route的后面，那么我们进入Controller的action中的时候数据库没有没初始化。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">  </div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">_initView</span><span class="params">(Yaf\Dispatcher $dispatcher)</span></span></div><div class="line">  &#123;</div><div class="line">      $twig = <span class="keyword">new</span> Twig(APPLICATION_PATH . <span class="string">'/application/views'</span>, Yaf\Registry::get(<span class="string">'config'</span>)-&gt;twig-&gt;toArray());</div><div class="line">      $dispatcher-&gt;setView($twig);</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Yaf/" rel="tag"># Yaf</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/04/Yaf自动加载规则/" rel="next" title="Yaf自动加载规则">
+                <i class="fa fa-chevron-left"></i> Yaf自动加载规则
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/02/04/Yaf集成Twig模板引擎/"
+     data-title="Yaf集成Twig模板引擎"
+     data-content=""
+     data-url="https://cheerzz.github.io/2017/02/04/Yaf集成Twig模板引擎/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/02/04/Yaf集成Twig模板引擎/"
+           data-title="Yaf集成Twig模板引擎" data-url="https://cheerzz.github.io/2017/02/04/Yaf集成Twig模板引擎/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="Placeless" />
+          <p class="site-author-name" itemprop="name">Placeless</p>
+          <p class="site-description motion-element" itemprop="description">从Php往前端路上缓慢爬行的🐶</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/cheerzz" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/1767872324" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://segmentfault.com/u/placeless" target="_blank" title="Segmentfault">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Segmentfault
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Twig安装"><span class="nav-number">1.</span> <span class="nav-text">Twig安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bootstrap中加载composer的autoload-php"><span class="nav-number">2.</span> <span class="nav-text">Bootstrap中加载composer的autoload.php</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Yaf配置文件中的Twig配置"><span class="nav-number">3.</span> <span class="nav-text">Yaf配置文件中的Twig配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现-Yaf-View-Interface的类"><span class="nav-number">4.</span> <span class="nav-text">实现 Yaf\View_Interface的类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bootstrap中设置Twig"><span class="nav-number">5.</span> <span class="nav-text">Bootstrap中设置Twig</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Placeless</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"placeless"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+  
+
+
+</body>
+</html>

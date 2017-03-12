@@ -1,0 +1,394 @@
+<!--
+    Powered By nodePPT - This is probably the best web presentation tool so far!
+    version: 1.4.2
+    site: https://github.com/ksky521/nodePPT
+    date: 
+-->
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Vue - By hkn</title>
+    <link rel="stylesheet" media="all" href="./css/nodeppt.css">
+    <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="./css/phone.css">
+
+    <link rel="stylesheet" href="./js/highlight/styles/monokai_sublime.css">
+    <link rel="stylesheet" href="./css/font-awesome.css">
+
+    <link rel="stylesheet" href="./css/theme.moon.css">
+</head>
+<body>
+<div class="slides">
+    <slides id="container">
+        <slide class="slide">
+            <section class="slide-wrapper">
+                <article class="flexbox vcenter">
+                    <h1>Vue</h1>
+                    <h2>Vue Todolist</h2>
+                    <p>
+                        <small>演讲者：hkn</small>
+                    </p>
+
+                </article>
+            </section>
+        </slide>
+        <slide class="slide">
+            <section class="slide-wrapper">
+                <article>
+                    <style type="text/css">
+                        .smile.icon {
+                            position: relative;
+                            width: 40px;
+                            height: 40px;
+                            display: inline-block;
+                            border: 1px solid white;
+                            border-radius: 50%;
+                        }
+
+                        .smile.icon:before {
+                            position: absolute;
+                            top: 12px;
+                            left: 6px;
+                            content: '';
+                            width: 10px;
+                            height: 10px;
+                            display: inline-block;
+                            border: 1px solid white;
+                            border-radius: 50%;
+                        }
+
+                        .smile.icon:after {
+                            position: absolute;
+                            top: 12px;
+                            right: 6px;
+                            content: '';
+                            width: 10px;
+                            height: 10px;
+                            display: inline-block;
+                            border: 1px solid white;
+                            border-radius: 50%;
+                        }
+
+                        .smile.icon i {
+                            position: absolute;
+                            left: 10px;
+                            top: 10px;
+                            width: 20px;
+                            height: 20px;
+                            border-radius: 50%;
+                            border-top: solid 1px transparent;
+                            border-bottom: solid 1px white;
+                            border-left: solid 1px transparent;
+                            border-right: solid 1px transparent;
+                        }
+                    </style>
+                    <div class="smile icon"><i></i></div>
+                </article>
+            </section>
+        </slide>
+        <slide class="slide" data-on-build="Slide.magic" data-on-enter="Slide.magic.init">
+            <section class="slide-wrapper">
+                <div class="magic">
+                    <div class="magicItem current pagedown" data-transition="earthquake">
+                        <article>
+                            <div class="magic-wrapper">
+                                <hgroup>
+                                    <h2>几道小题</h2>
+
+                                </hgroup>
+                                <article>
+
+<pre><code>for(var i = 0;i&lt;5;i++){
+    setTimeout(function(){
+        console.log(i)
+    },i*1000)
+}
+</code></pre>
+                                </article>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="magicItem next pagedown" data-transition="earthquake">
+                        <article>
+                            <div class="magic-wrapper">
+                                <article>
+
+<pre><code>var a =20
+var obj={
+    a:10,
+    b:function(){
+        alert(this.a)
+    }
+}
+obj.b()
+var c = obj.b
+c()
+</code></pre>
+                                </article>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="magicItem far-next pagedown" data-transition="earthquake">
+                        <article>
+                            <div class="magic-wrapper">
+                                <article>
+
+<pre><code>var a =20
+var obj ={
+    a:10,
+    b:function(){
+        setTimeout(function(){
+            alert(this.a)
+        },1000)
+    }
+}
+obj.b()
+</code></pre>
+                                </article>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+        </slide>
+        <slide class="slide">
+            <section class="slide-wrapper">
+                <article class="flexbox vcenter">
+                    <h1>Vue 解决了前端开发中的那些痛点？</h1>
+
+                </article>
+            </section>
+        </slide>
+        <slide class="slide">
+            <section class="slide-wrapper">
+                <article class="flexbox vcenter">
+                    <h1>JavaScript</h1>
+                    <pre><code>&lt;input type=&#39;text&#39; id=&#39;input&#39;&gt;
+&lt;div id=&quot;output&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+var input = document.querySelector(&#39;#input&#39;)
+var output = document.querySelector(&#39;#output&#39;)
+input.addEventListener(&quot;change&quot;, function(e){
+   output.innerText = e.target.value
+});
+&lt;script&gt;
+</code></pre>
+                </article>
+            </section>
+        </slide>
+        <slide class="slide">
+            <section class="slide-wrapper">
+                <article class="flexbox vcenter">
+                    <h1>via Vue</h1>
+                    <pre><code>&lt;div id=&#39;app&#39;&gt;
+    &lt;input type=&quot;text&quot; v-model=&quot;msg&quot;&gt;
+    {{msg}}
+&lt;/div&gt;
+</code></pre>
+                    <pre><code class="javascript">var app = new Vue({
+    el: &#39;#app&#39;,
+    data: {
+        message: &#39;Hello Vue!&#39;
+    }   
+})
+</code></pre>
+
+                </article>
+            </section>
+        </slide>
+        <slide class="slide">
+            <section class="slide-wrapper">
+                <article class="flexbox vcenter">
+                    <h1>via React</h1>
+                    <pre><code class="javascript">class Demo extends React.Component{
+   constructor(props){
+     super(props)
+     this.state={
+       msg:&#39;hello world&#39;
+     }
+     this.handleChange = this.handleChange.bind(this)
+   }
+   handleChange(e){
+    this.setState({
+      msg: e.target.value
+    })
+
+   }
+   render(){
+     return(
+       &lt;div&gt;
+         &lt;input type=&quot;text&quot; onChange={this.handleChange} value={this.state.msg}/&gt;
+         {this.state.msg}
+       &lt;/div&gt;
+     )
+   }
+ }
+</code></pre>
+
+                </article>
+            </section>
+        </slide>
+        <slide class="slide hasnote">
+            <aside class="note">
+                <section>
+                    <p>单向数据流:数据总是从父组件传递到子组件，可以让数据的变化可观测 。</p>
+                    <p>子组件向父组件通讯:由于数据的流动是单向的原因，通常解决这个问题是非常的棘手的，更糟糕的情况是兄弟组件通讯。解决办法,EventBus与Vuex。</p>
+
+                </section>
+            </aside>
+            <section class="slide-wrapper">
+                <article class="flexbox vcenter">
+                    <h1>Todolist do in action</h1>
+                    <ul>
+                        <li>vue-cli生成vue工程目录</li>
+                        <li>vue api</li>
+                        <li>vue的事件</li>
+                        <li>指令</li>
+                        <li>通过props传递数据 <em>单向数据流</em>
+                            <ul>
+                                <li>父组件向子组件通讯</li>
+                                <li>子组件向父组件通讯 <em>痛点问题</em></li>
+                            </ul>
+                        </li>
+                        <li>$emit $on 解决子组件向父组件通讯的问题</li>
+                    </ul>
+
+                </article>
+            </section>
+        </slide>
+        <slide class="slide">
+            <section class="slide-wrapper">
+                <article class="flexbox vcenter">
+                    <h1>Demo</h1>
+                    <p><a href="https://cheerzz.github.io/vue-todo/" target="_black">Vue</a>
+                        <a href="https://cheerzz.github.io/todo-demo/" target="_black">React</a>
+                        <a href="https://cheerzz.github.io/todo-mbox/" target="_black">React+Mobx</a></p>
+
+                </article>
+            </section>
+        </slide>
+        <slide class="slide">
+            <section class="slide-wrapper">
+                <article class="flexbox vcenter">
+                    <h1>使用<a href="https://weex-project.io/" target="_blank">Weex</a> 跑一个Android的小案例</h1>
+
+                </article>
+            </section>
+        </slide>
+        <slide class="slide">
+            <section class="slide-wrapper">
+                <article class="flexbox vcenter">
+                    <h1>Installation</h1>
+                    <ul>
+                        <li>Java环境</li>
+                        <li>Android SDK
+                            <pre><code>npm install -g vue
+npm install -g weexpack weex-toolkit
+//https://github.com/ElemeFE/weex-vue-starter-kit
+git clone https://github.com/ElemeFE/weex-vue-starter-kit.git
+cd /path/to/this/git/clone/path
+npm install 
+weexpack platform add ios
+weexpack run ios
+</code></pre>
+                        </li>
+                    </ul>
+
+                </article>
+            </section>
+        </slide>
+        <slide class="slide">
+            <section class="slide-wrapper">
+                <article class="flexbox vcenter">
+                    <h1>Thanks!</h1>
+
+                </article>
+            </section>
+        </slide>
+
+
+        <!-- <slide class="slide logoslide dark nobackground">
+            <article class="flexbox vcenter">
+                <h2 style="color: white;">Powered By nodePPT v1.4.2</h2>
+            </article>
+        </slide> -->
+        <div class="slideTip" id="tip"></div>
+    </slides>
+</div>
+<canvas id="drawBoard" class="draw-board" width="900" height="700"></canvas>
+<div class="progress"><span id="progress"></span></div>
+<div id="_buttons">
+    <div class="_btn-box" id="_btn-box" style="display:none;">
+        <button class="fa fa-arrow-circle-left" id="_btn-prev"></button>
+        <button class="fa fa-arrow-circle-right" id="_btn-next"></button>
+        <button class="fa fa-paint-brush" id="_btn-brush"></button>
+        <button class="fa fa-compress" id="_btn-overview" data-toggle="fa fa-expand"></button>
+    </div>
+    <button class="fa fa-bars" id="_btn-bar" data-toggle="fa fa-close"></button>
+</div>
+<script src="./js/mixjs/lib/mix.0.3.0.min.js"></script>
+<script>
+    var base = location.protocol + '//' + location.host;
+
+    var path = (location.pathname + '#').split('/').filter(function (v) {
+        return !!v;
+    });
+    path.pop();
+    path = path.join('/');
+    MixJS.config({
+        baseURL: [base, path, 'js'].join('/') + '/'
+    });
+
+</script>
+<script src="./js/mixjs/lib/event/broadcast.js"></script>
+<script src="./js/nodeppt.js"></script>
+<script>
+    Slide.init({
+        containerID: 'container',
+        drawBoardID: 'drawBoard',
+        slideClass: '.slide',
+        buildClass: '.build',
+        progressID: 'progress',
+        transition: 'slide3',
+        width: 1100,
+        dir: './',
+
+        //打开下面的注释就开启postMessage方式
+        //访问网址127.0.0.1:8080/ppt/demo#client
+        control: {
+            type: 'postMessage',
+            args: {
+                isControl: false
+            }
+        },
+
+        tipID: 'tip'
+    });
+    MixJS.loadJS('highlight/highlight.pack.js', function () {
+        hljs.tabReplace = '  ';
+        hljs.initHighlightingOnLoad();
+    });
+</script>
+<script src="./js/demo.js"></script>
+<link rel="stylesheet" href="./css/demo.css">
+<script src="./js/zoom.js"></script>
+
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  config: ["TeX-AMS-MML_HTMLorMML.js"],
+  tex2jax: {inlineMath: [['\\(','\\)']]}});
+  //['$','$'], 避免货币价格冲突
+
+
+
+
+
+
+
+</script>
+<script type="text/javascript" src="./js/mathjax/MathJax.js"></script>
+
+<!--placeholder-->
+</body>
+</html>
